@@ -59,7 +59,8 @@ If we want to implement that in c#, [https://github.com/xoofx/zio](https://githu
 
 wasm can allocate memory itself, so it's feasible to make an in memory file system entirely in a wasm file.
 
-Emscripten does this, with its MEMFS. I'm still learning how to make a wasm file that just has MEMFS and nothing else.
+Emscripten does this, with its MEMFS.
+- I got a [minimal MEMFS in wasm working using WASMFS](https://github.com/Phylliida/EmscriptenMEMFSWasmWrapper), but its exports are kind weird so I'll need to modify this so the exports line up nicer.
 
 Alternatively, there's [https://github.com/bytecodealliance/WASI-Virt](https://github.com/bytecodealliance/WASI-Virt). 
 - But it is read-only 
