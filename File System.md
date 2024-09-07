@@ -10,7 +10,7 @@ Best documentation I've found is [https://wasix.org/docs/api-reference](WASIX) (
 
 Obviously we do not want to let users write to arbitrary files, or make arbitrary network connections.
 
-WASI shares these goals, and access to any of it's functionalities need to be enabled manually.
+WASI shares these goals, and access to any of its functionalities need to be enabled manually.
 
 So the simplest thing to do is a pop-up (like with networking) where WASI requests to access files before accessing them.
 
