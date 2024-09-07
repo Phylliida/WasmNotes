@@ -1,8 +1,8 @@
 # WASI
 
-Wasm files frequently export things like `fd_write` `fd_read`
+Wasm files frequently import things like `fd_write` `fd_read`. These must be defined in order for us to be able to run the wasm.
 
-These originate from the WASI standard, which is standards that let wasm do stuff they couldn't normally do
+These originate from the WASI standard, which let wasm do stuff they couldn't normally do
 (connect to network, open files, etc.) by calling outside functions.
 
 These are somewhat undocumented/in progress functions.
@@ -10,11 +10,11 @@ Best documentation I've found is [https://wasix.org/docs/api-reference](WASIX) (
 
 Obviously we do not want to let users write to arbitrary files, or make arbitrary network connections.
 
-WASI shares these goals, and access to any file needs to be manually enabled before WASI can access it.
+WASI shares these goals, and access to any of it's functionalities need to be enabled manually.
 
 So the simplest thing to do is a pop-up (like with networking) where WASI requests to access files before accessing them.
 
-But I think there's a better solution.
+I think there's a better solution, but first:
 
 # stdin/stdout/stderr
 
@@ -31,7 +31,7 @@ Fortunately, Wasmtime dot net includes a `WasiConfiguration` that you can give t
 Redirect to a (temp) file seems like a good option.
 
 Vulnerability: Flooding the user's hard drive with large tmp file.
-Solution: Checks on file size and terminate the program and delete the tmp file if it gets too big (possibly users can override this setting manually).
+Solution: Checks on file size and terminate the program and delete the tmp file if it gets too big (possibly users can override this setting manually). (question: how fast can these be filled up? Maybe checks not fast enough? TBD)
 
 An even better option would be to have custom stdin/stdout streams. [Wasmtime supports this](https://github.com/bytecodealliance/wasmtime/issues/7581), however Wasmtime dot net does not.
 
@@ -48,6 +48,8 @@ Two options here:
 - File system implemented in a wasm file
 
 ## In memory file system implemented externally
+
+This is commonly done in javascript, where there is no file system access.
 
 This may have a performance advantage, but comes with extra functionality outside of wasm that needs to be maintained.
 
